@@ -64,9 +64,11 @@ public class MovieApiService {
                     for (int i = 0; i < moviesJson.length(); i++) {
                         JSONObject movieJson = moviesJson.getJSONObject(i);
 
+                        String imageUrl = "http://image.tmdb.org/t/p/w185" + movieJson.getString("poster_path");
+
                         MovieEntity movie =  new MovieEntity();
                         movie.setTitle(movieJson.getString("original_title"));
-                        movie.setImage(movieJson.getString("poster_path"));
+                        movie.setImage(imageUrl);
                         movie.setRating(movieJson.getString("vote_average"));
                         movie.setReleaseDate(movieJson.getString("release_date"));
                         movie.setSynopsis(movieJson.getString("overview"));

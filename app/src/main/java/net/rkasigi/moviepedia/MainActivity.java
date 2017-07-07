@@ -10,8 +10,10 @@ import android.app.ProgressDialog;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -20,21 +22,41 @@ import java.util.List;
  * @author Rendi Kasigi
  * @version 1.0
  */
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements MoviesAdapter.MovieItemClickListener {
 
     private MovieApiService movieApiService = new MovieApiService();
+
+    private MoviesAdapter mAdapter;
+    private RecyclerView rvMovieList;
+    private List<MovieEntity> moviesList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-
         loadMovies(MovieApiService.SortBy.POPULAR);
+
+        rvMovieList = (RecyclerView) findViewById(R.id.rv_movie_list);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
+        rvMovieList.setLayoutManager(gridLayoutManager);
+        rvMovieList.setHasFixedSize(true);
+
     }
 
     private void loadMovies(MovieApiService.SortBy sortBy) {
         new PullMovieTask().execute(sortBy);
+    }
+
+    private void loadMovies() {
+        mAdapter = new MoviesAdapter(moviesList, this);
+        rvMovieList.setAdapter(mAdapter);
+
+    }
+
+    @Override
+    public void onMovieItemClick(int clickedItemIndex) {
+
     }
 
     private class PullMovieTask extends AsyncTask<MovieApiService.SortBy, Void, List<MovieEntity>> {
@@ -55,10 +77,8 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(List<MovieEntity> movies) {
             hideProgress();
-            //super.onPostExecute(movies);
-            for(MovieEntity m: movies) {
-                Log.d(Config.APP_TAG, m.toString());
-            }
+            moviesList = movies;
+            loadMovies();
         }
 
         private void showProgress() {
