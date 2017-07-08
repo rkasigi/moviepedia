@@ -2,7 +2,7 @@
  * This project was born to complete one of the terms of graduation from
  * Udacity Associate Android Developer Fast Track Nanodegree Program
  *
- * July 6, 2016
+ * July 6, 2017
  */
 package net.rkasigi.moviepedia;
 
