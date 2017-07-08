@@ -6,13 +6,15 @@
  */
 package net.rkasigi.moviepedia;
 
+import java.io.Serializable;
+
 /**
  * MovieEntity
  *
  * @author Rendi Kasigi
  * @version 1.0
  */
-public class MovieEntity {
+public class MovieEntity implements Serializable {
 
     private String title;
     private String image;

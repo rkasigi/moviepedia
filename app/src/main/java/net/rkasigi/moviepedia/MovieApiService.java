@@ -29,6 +29,7 @@ import java.util.Scanner;
  * @version 1.0
  */
 public class MovieApiService {
+    private final String TAG = MovieApiService.class.getCanonicalName();
 
 
     public List<MovieEntity> getMovies(SortBy sortBy) {
@@ -41,7 +42,7 @@ public class MovieApiService {
             movies = jsonToMovieEntity(jsonResponse);
 
         } catch (Exception e) {
-            Log.e(Config.APP_TAG, e.getMessage());
+            Log.e(TAG, e.getMessage());
             e.printStackTrace();
         }
 
@@ -82,7 +83,7 @@ public class MovieApiService {
             }
 
         } catch (JSONException e) {
-            Log.e(Config.APP_TAG, e.getMessage());
+            Log.e(TAG, e.getMessage());
             e.printStackTrace();
         }
 
@@ -105,7 +106,7 @@ public class MovieApiService {
         try {
             url = new URL(builtUri.toString());
         } catch (MalformedURLException e) {
-            Log.e(Config.APP_TAG, e.getMessage());
+            Log.e(TAG, e.getMessage());
             e.printStackTrace();
         }
 

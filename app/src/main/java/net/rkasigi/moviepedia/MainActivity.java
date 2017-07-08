@@ -11,6 +11,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -61,8 +62,6 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
         switch (item.getItemId()) {
             case R.id.action_sortby:
                 DialogFragment sortByDialog = new SortByDialog();
-                Bundle args = new Bundle();
-
                 sortByDialog.show(getFragmentManager(), "sortByDialog");
 
                 return true;
@@ -84,6 +83,11 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
 
     @Override
     public void onMovieItemClick(int clickedItemIndex) {
+
+        MovieEntity movie = moviesList.get(clickedItemIndex);
+        Intent i = new Intent(this, MovieDetailActivity.class);
+        i.putExtra("MovieEntity", movie);
+        startActivity(i);
 
     }
 
