@@ -6,12 +6,18 @@
  */
 package net.rkasigi.moviepedia;
 
+import android.app.AlertDialog;
+import android.app.Dialog;
+import android.app.DialogFragment;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -42,6 +48,28 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
         rvMovieList.setLayoutManager(gridLayoutManager);
         rvMovieList.setHasFixedSize(true);
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.sort_by, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_sortby:
+                DialogFragment sortByDialog = new SortByDialog();
+                Bundle args = new Bundle();
+
+                sortByDialog.show(getFragmentManager(), "sortByDialog");
+
+                return true;
+
+        }
+
+        return super.onOptionsItemSelected(item);
     }
 
     private void loadMovies(MovieApiService.SortBy sortBy) {
@@ -93,6 +121,40 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
             if (mProgressDialog != null && mProgressDialog.isShowing()) {
                 mProgressDialog.dismiss();
             }
+        }
+    }
+
+    public static class SortByDialog extends DialogFragment {
+
+        @Override
+        public Dialog onCreateDialog(Bundle savedInstanceState) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+            builder.setTitle(R.string.sort_by)
+                    .setItems(R.array.sort_by, new DialogInterface.OnClickListener() {
+
+                        public void onClick(DialogInterface dialog, int which) {
+
+                            MainActivity activity = (MainActivity) getActivity();
+
+                            switch (which) {
+                                case 0:
+                                    activity.loadMovies(MovieApiService.SortBy.POPULAR);
+                                    break;
+
+                                case 1:
+                                    activity.loadMovies(MovieApiService.SortBy.RATED);
+                                    break;
+
+
+
+                            }
+
+                        }
+                    });
+
+
+            return builder.create();
         }
     }
 }
