@@ -8,6 +8,7 @@
     <ImageView
         android:id="@+id/iv_movie_item_poster"
         android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

@@ -128,7 +128,11 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
          */
         void bind(MovieEntity movie) {
 
-            Picasso.with(context).load(movie.getImage()).into(mImagePoster);
+            Picasso
+                    .with(context)
+                    .load(movie.getImage())
+                    .error(R.drawable.imagenotfound_poster)
+                    .into(mImagePoster);
         }
 
         /**
