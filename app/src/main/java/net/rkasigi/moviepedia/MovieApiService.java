@@ -6,6 +6,7 @@
  */
 package net.rkasigi.moviepedia;
 
+import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
@@ -31,6 +32,12 @@ import java.util.Scanner;
 public class MovieApiService {
     private final String TAG = MovieApiService.class.getCanonicalName();
 
+    private NetworkErrorListener networkErrorListener;
+
+
+    public void setNetworkErrorListener(NetworkErrorListener networkErrorListener) {
+        this.networkErrorListener = networkErrorListener;
+    }
 
     public List<MovieEntity> getMovies(SortBy sortBy) {
 
@@ -44,6 +51,7 @@ public class MovieApiService {
         } catch (Exception e) {
             Log.e(TAG, e.getMessage());
             e.printStackTrace();
+            triggerNetworkErrorListener(e.getMessage());
         }
 
         return movies;
@@ -85,6 +93,7 @@ public class MovieApiService {
         } catch (JSONException e) {
             Log.e(TAG, e.getMessage());
             e.printStackTrace();
+            triggerNetworkErrorListener(e.getMessage());
         }
 
         return movies;
@@ -108,6 +117,7 @@ public class MovieApiService {
         } catch (MalformedURLException e) {
             Log.e(TAG, e.getMessage());
             e.printStackTrace();
+            triggerNetworkErrorListener(e.getMessage());
         }
 
         return url;
@@ -139,6 +149,13 @@ public class MovieApiService {
         }
     }
 
+    private void triggerNetworkErrorListener(String errorMessage) {
+        if(networkErrorListener != null) {
+            networkErrorListener.invoke(networkErrorListener.getContext(), errorMessage);
+        }
+
+    }
+
     public enum SortBy {
         POPULAR("popularity.desc"),
         RATED("vote_average.desc")
@@ -161,5 +178,20 @@ public class MovieApiService {
         public String toString() {
             return text;
         }
+    }
+
+    public static abstract class NetworkErrorListener {
+
+        Context context;
+
+        NetworkErrorListener(Context context) {
+            this.context = context;
+        }
+
+        public Context getContext() {
+            return context;
+        }
+
+        abstract void invoke(Context context, String errorMessage);
     }
 }

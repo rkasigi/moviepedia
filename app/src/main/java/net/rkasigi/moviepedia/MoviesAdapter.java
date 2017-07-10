@@ -44,7 +44,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.MovieViewH
     public MoviesAdapter(List<MovieEntity> moviesList, MovieItemClickListener listener) {
 
         this.moviesList = moviesList;
-        mNumberItems = moviesList.size();
+        mNumberItems = moviesList == null ? 0 : moviesList.size();
         mOnClickListener = listener;
     }
 

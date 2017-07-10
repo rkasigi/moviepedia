@@ -10,6 +10,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.DialogFragment;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -19,6 +20,8 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
 
     private MoviesAdapter mAdapter;
     private RecyclerView rvMovieList;
+    public TextView tvMovieMessage;
     private List<MovieEntity> moviesList = new ArrayList<>();
 
     @Override
@@ -42,12 +46,38 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        loadMovies(MovieApiService.SortBy.POPULAR);
+
 
         rvMovieList = (RecyclerView) findViewById(R.id.rv_movie_list);
+        tvMovieMessage = (TextView) findViewById(R.id.tv_movie_message);
+
         GridLayoutManager gridLayoutManager = new GridLayoutManager(this, 2);
         rvMovieList.setLayoutManager(gridLayoutManager);
         rvMovieList.setHasFixedSize(true);
+
+        movieApiService.setNetworkErrorListener(new MovieApiService.NetworkErrorListener(this){
+
+            @Override
+            public void invoke(Context context, String errorMessage) {
+
+                final String errorText = errorMessage;
+                MainActivity activity = (MainActivity) context;
+
+                activity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tvMovieMessage.setText(errorText);
+                        tvMovieMessage.setVisibility(View.VISIBLE);
+
+                    }
+                });
+
+
+            }
+
+        });
+
+        loadMovies(MovieApiService.SortBy.POPULAR);
 
     }
 
@@ -111,11 +141,15 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
             hideProgress();
             moviesList = movies;
             loadMovies();
+            if(moviesList != null) {
+                tvMovieMessage.setVisibility(View.INVISIBLE);
+
+            }
         }
 
         private void showProgress() {
             if (!(mProgressDialog != null && mProgressDialog.isShowing())) {
-                mProgressDialog = ProgressDialog.show(MainActivity.this, "Wait...", "sending data ...", true);
+                mProgressDialog = ProgressDialog.show(MainActivity.this, "Wait...", "loading data ...", true);
                 mProgressDialog.setCancelable(false);
             }
 
