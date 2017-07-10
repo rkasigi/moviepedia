@@ -103,7 +103,7 @@ public class MovieApiService {
     /**
      *
      * @param sortBy get result for sorting by
-     * @return
+     * @return URL
      */
     private URL buildUrl(SortBy sortBy) {
         Uri builtUri = Uri.parse(Config.MOVIEDB_BASE_URL).buildUpon()
@@ -167,7 +167,7 @@ public class MovieApiService {
          *
          * @param text
          */
-        private SortBy(final String text) {
+        SortBy(final String text) {
             this.text = text;
         }
 

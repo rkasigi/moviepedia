@@ -14,7 +14,7 @@ import java.io.Serializable;
  * @author Rendi Kasigi
  * @version 1.0
  */
-public class MovieEntity implements Serializable {
+class MovieEntity implements Serializable {
 
     private String title;
     private String image;

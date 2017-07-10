@@ -34,9 +34,9 @@ import java.util.List;
  */
 public class MainActivity extends AppCompatActivity implements MoviesAdapter.MovieItemClickListener {
 
-    private MovieApiService movieApiService = new MovieApiService();
+    private final MovieApiService movieApiService = new MovieApiService();
 
-    private MoviesAdapter mAdapter;
+
     private RecyclerView rvMovieList;
     public TextView tvMovieMessage;
     private List<MovieEntity> moviesList = new ArrayList<>();
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
     }
 
     private void loadMovies() {
-        mAdapter = new MoviesAdapter(moviesList, this);
+        MoviesAdapter mAdapter = new MoviesAdapter(moviesList, this);
         rvMovieList.setAdapter(mAdapter);
 
     }

@@ -12,9 +12,7 @@ package net.rkasigi.moviepedia;
  * @author Rendi Kasigi
  * @version 1.0
  */
-public class Config {
-
-    final static String APP_TAG = "RKASIGI.MOVIEPEDIA";
+class Config {
 
     final static String MOVIEDB_BASE_URL = "https://api.themoviedb.org/3/discover/movie";
     final static String MOVIEDB_API_KEY = "";
