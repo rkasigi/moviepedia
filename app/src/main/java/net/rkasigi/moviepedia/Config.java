@@ -15,5 +15,10 @@ package net.rkasigi.moviepedia;
 class Config {
 
     final static String MOVIEDB_BASE_URL = "https://api.themoviedb.org/3/discover/movie";
+
+    /**
+     * Pleas put you themoviedb.org api key here
+     *
+     */
     final static String MOVIEDB_API_KEY = "";
 }
